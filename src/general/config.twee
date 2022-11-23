@@ -43,7 +43,6 @@
 			habitation: "Layer1 Habitation",
 			balloon: "Escape Balloon L1",
 			preview: "Layer1 Preview"
-			curses:
 		},
 		gameplay: {
 			ascentTime: 1,
