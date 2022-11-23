@@ -1,0 +1,174 @@
+/% I'm not sure how performance RNG generation is. If we can re-roll for each event, then the system could be a lot more flexible %/
+/* Images are used to describe wonders, threats, and habitation so it's best to leave them as links to stand alone sections */
+/* This object will be static, so it would probably be good to make it a global object */
+:: Init Layer Config [config]
+<<nobr>>
+
+<<set $flags = []>>
+
+<<set setup.layers to [
+	{
+		id: 0,
+		ordinal: "surface",
+		name: "The Surface",
+		assets: {
+			audio: "surface"
+		},
+		passages: {
+			hub: "Surface Hub",
+			balloon: "Surface Hub"
+		},
+		description: {
+			ascent: "You continue your hike and eventually you see the edge of the Abyss, then eventually the buildings you recall from Outset Town come back into view and welcome you back to the surface world."
+		},
+		events: []
+	},
+	{
+		id: 1,
+		ordinal: "first layer",
+		name: "Arcadia's Garden",
+		assets: {
+			introImg: 'Layer Intros/l1intro.png',
+			threatsImg: 'Clipped-Fin/Abyss Diver Page 2-threats.png',
+			cursesImg: 'Clipped-Fin/Abyss Diver Page 2-curses.png',
+			relicsImg: 'Clipped-Fin/Abyss Diver Page 2-relics.png',
+			wondersImg: 'Clipped-Fin/Abyss Diver Page 2-wonders.png',
+			audio: "layer1"
+		},
+		passages: {
+			intro: "Layer1 1",
+			hub: "Layer1 Hub",
+			wonders: "Layer1 Wonders",
+			forage: "Layer1 Forage",
+			habitation: "Layer1 Habitation",
+			balloon: "Escape Balloon L1",
+			preview: "Layer1 Preview"
+			curses:
+		},
+		gameplay: {
+			ascentTime: 1,
+			ascentCost: 10,
+			descentTime: 2,
+			relics: [$relic1, $relic2, $relic3, $relic4, $relic5, $relic6, $relic7, $relic8, $relic9],
+			curses: [$curse1, $curse2, $curse3, $curse4, $curse5, $curse6, $curse7, $curse8, $curse9, $curse10, $curse11, $curse12]
+        },
+		descriptions: {
+			intro: "Stepping across the sparse grasses, eyes occasionally catching on some flowers that are much more vulvic than any you've seen before, or perhaps a rock formation that seems far too phallic to be natural, you proceed down the relatively tranquil first layer of the Abyss. The town already begins to disappear from view above you, and below you is nothing but gentle, lush slopes leading further into the dark.\n\n \
+					Traveling back to the surface from here will take 1 day, and will cost 10 corruption. Leaving the abyss also requires that you don't have any negative corruption points even if you plan to come back.",
+			hubIntro: "You find yourself amidst the slightly-off natural splendor of the first layer",
+			descent: "Descending to the next layer will take 2 days. How are your supplies of food and water? It's only going to get harder from here.\
+					You notice the air is a bit more humid and the plants are a bit greener as you approach the path towards the second layer.",
+			ascent: "You continue your hike and eventually you see the edge of the Abyss, then eventually the buildings you recall from Outset Town come back into view and welcome you back to the surface world.",
+			ascentBalloon: "The trip through this layer is brief and almost indistinguishable to a trip in a balloon in the skies of the surface, with the more mundane world outside the Abyss so close.\
+					Your body feels a bit strange after moving upwards through the miasma so quickly giving a bit of a shock to your system, but hopefully you picked up enough Curses along the way to successfully ascend to the surface.",
+			relics: "If there were ever any powerful, versatile, noteworthy Relics to be found in such an early layer, they were likely claimed by someone else by now. Of course, almost any Relic can be useful under the right circumstances or with some lateral thinking &mdash; these are just a bit harder to find applications for than the rarer Relics you can find deeper in. \n\n\
+					Some Relic may be particularly well-hidden or require significant detours, causing them to incur a day cost in the search for them, in addition to the standard corruption cost.",
+			previewIntro: "You see yourself standing in the fields of a vibrant valley, with a few trees nearby that don't quite seem normal."
+		},
+		events: [
+			{
+				/* Priority events will be evaluated first and have priority vs other events.*/
+				/* By default, events only happen once. The repeatable flag disables that behavior */
+				/* The enable flag arg tracks whether the bandits have been killed */
+				id: "l1-threat-bandits",
+				flags: ["ascent", "minDubloons", "maxCompanions", "flagNotSet"],
+				minDubloonsArg: 150,
+				maxCompanionsArg: 3,
+				flatNotSetArg: "banditsKilled",
+				passage: "Layer1 Threat1 Ascend",
+				passageText: "Deal with the opportunistic bandits",
+				repeatable: true,
+				redirect: false,
+			},
+			{
+				id: "l1-threat-bandits-killed",
+				flags: ["ascent",  "hasFlag", "banditsKilled"],
+				text: "As you ascend you glance to the side. There are a few faded blood stains if you know where to look.",
+				repeatable: false,
+				passage:""
+			},
+			{
+				id: "l1-random-1",
+				flags: ["hub", "chance"],
+				chanceArg: 1,
+				text: "Crawling up a tree you spot an odd looking caterpillar, it almost looks like a disembodied human phallus, but it seems to have sharp spines rather than hair. You probably wouldn't want to put this is any places you'd usually put a cock.",
+				repeatable: false,
+				passage:""
+			},
+			{
+				id: "l1-random-1",
+				flags: ["hub", "chance"],
+				chanceArg: 1,
+				text: "In the distance you can hear some people yelling about something, but you can't quite make it out. When you get a bit closer, you can't seem to find any people, but you do see some spare clothes on the ground and some rustling in the bush nearby. Rather than waiting for the people to return, you choose to move on.<br><br>.",
+				repeatable: false,
+				passage:""
+			},
+			{
+				id: "l1-random-1",
+				flags: ["hub", "chance"],
+				chanceArg: 1,
+				text: "Near the top of the layer, you notice a completely normal woman carrying a full pack trying to aproach the surface, but she seems to be having a great difficulty moving forward. \"Why can't I just leave?'\"' She calls out in exasperation to no one in particular. It seems the Abyss itself is impeding her, so you couldn't help her even if you tried",
+				repeatable: false,
+				passage:""
+			},
+			{
+				id: "l1-khemia-1",
+				flags: ["hub", "chance", "Khemia"],
+				chanceArg: 1,
+				text: "Khemia turns towards you smugly, \"You know $app.name, this whole layer is a breeze if you've been around a few times. I think we could probably clear out anything worth doing in less than a day if we took the right shortcuts. This is barely even a speed bump on our path to the bottom of the Abyss for the right people. And who do you think knows the shortcuts?\" He smiles widely and puffs out his chest, gesturing to himself with his thumb before leading you down the most efficient path to your destination.",
+				repeatable: false,
+				passage:""
+			},		
+			{
+				id: "l1-saeko-1",
+				flags: ["hub", "chance", "Saeko"],
+				chanceArg: 1,
+				text: "You spot Saeko crouching near a tree stump with some mold grown over it, writing in a notebook. She looks up at you and comments, \"You know, this isn't really a tree stump. It's a fungus that's shaped itself like a dead tree, an interesting case of mimicry.\" She digs up a bit of the dirt by the base of the apparent stump and reveals a gray texture leaking a creamy white liquid below the surface. \"I wonder what this is doing? The ecology here is so strange, even though it's so close to the surface...\" Her musings trail off, but she stands up and you get moving again towards your destination.",
+				repeatable: false,
+				passage:""
+			},
+			{
+				id: "l1-maru-1",
+				flags: ["forageFood", "Maru", "hub"],
+				passage: "Layer1 Forage Convo",
+				passageText: "",
+				redirect: false,
+				repeatable: false,
+			},
+			{
+				id: "l1-cherry-luck",
+				flags: ["intro", "Cherry"],
+				passage: "Cherry Luck 1",
+				passageText: "Use Cherry's chaotic luck",
+				redirect: false,
+				repeatable: true,
+			}
+		]
+	},
+	{
+		id: 2,
+		ordinal: "second layer",
+		name: "Dewdrop Rain Underbrush",
+		assets: {
+			img: 'Layer Intros/l2intro.png',
+			audio: "layer2"
+		},
+		/* Bandits are not functional since the 2nd layer doesn't use the general layer code. */
+		/* However, all of their flags are supported */
+		events: [
+			{
+				id: "l1-threat-bandits",
+				flags: ["ascent", "minDubloons", "maxCompanions", "flagNotSet"],
+				minDubloonsArg: 150,
+				maxCompanionsArg: 3,
+				flatNotSetArg: "banditsKilled",
+				passage: "Layer1 Threat1 Ascend",
+				passageText: "Deal with the opportunistic bandits",
+				repeatable: true,
+				redirect: false,
+			}
+		]
+	}
+]>>
+
+<</nobr>>

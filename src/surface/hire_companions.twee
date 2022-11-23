@@ -1,0 +1,121 @@
+:: Surface Companions [surface cards nobr]
+
+<p>Here are the companions that are available for you to hire with your $dubloons dubloons.</p>
+
+<<if $compTok == 1>>
+<p>
+You currently have 1 companion token due to playing in easy mode. This allows you to hire any single companion for free one time, no matter what their normal cost is. It only works one time, so spend it wisely!
+</p>
+<</if>>
+
+<p>
+These are descriptions of the companions when they first join you on your expedition, but if you get closer to them over time or fulfill other criteria, you can have additional conversations with them and they might just have other skills they can use to help you!
+</p>
+
+<div class="cards-grid">
+<<for _companion range $companions>>
+<div>
+[img[setup.ImagePath + _companion.image]]
+<h2><<print _companion.name>></h2>
+<p>
+<<if $hiredCompanions.some(e => e.name === _companion.name)>>
+<button class="link-internal macro-button" type="button" disabled>Already hired</button>
+<<else>>
+<<button `"Hire for " + _companion.cost + " dubloons"` `"Hire " + _companion.name`>><</button>>
+<</if>>
+</p>
+<p><<include `_companion.name + " Introduction"`>></p>
+</div>
+<</for>>
+</div>
+
+<p>[[Continue your business on the surface|Surface Hub]]</p>
+
+:: Hire Maru [surface]
+
+<<nobr>><<set $hiredCompanions.push($companionMaru)>>
+<<if $compTok == 1>>
+	<<set $compTok = 0>>
+<<else>>
+	<<set $dubloons -= $companionMaru.cost>>
+<</if>>
+<</nobr>>
+You have successfully hired Maru. Hopefully he brings you a lot of joy and helps you along in your journey.
+
+[[Hire more companions|Surface Companions][$Maru_LastT=$time]]
+[[Return to Outset Town|Surface Hub][$Maru_LastT=$time]]
+
+
+:: Hire Lily [surface]
+
+<<nobr>><<set $hiredCompanions.push($companionLily)>>
+<<if $compTok == 1>>
+	<<set $compTok = 0>>
+<<else>>
+	<<set $dubloons -= $companionLily.cost>>
+<</if>>
+<</nobr>><<set $sellAdd = 10>>
+You have successfully hired Lily. Hopefully her electric personality and excellent haggling serve you well in your journey.
+
+[[Hire more companions|Surface Companions][$Lily_LastT=$time]]
+[[Return to Outset Town|Surface Hub][$Lily_LastT=$time]]
+
+
+:: Hire Khemia [surface]
+<<nobr>><<set $hiredCompanions.push($companionKhemia)>>
+<<if $compTok == 1>>
+	<<set $compTok = 0>>
+<<else>>
+	<<set $dubloons -= $companionKhemia.cost>>
+<</if>>
+<</nobr>><<set $timeRed += 2>>
+You have successfully hired Khemia. Hopefully his fighting expertise and experience in traversing the abyss help you along your journey.
+
+[[Hire more companions|Surface Companions][$Khemia_LastT=$time]]
+[[Return to Outset Town|Surface Hub][$Khemia_LastT=$time]]
+
+
+:: Hire Cherry [surface]
+
+<<nobr>><<set $hiredCompanions.push($companionCherry)>>
+<<if $compTok == 1>>
+	<<set $compTok = 0>>
+<<else>>
+	<<set $dubloons -= $companionCherry.cost>>
+<</if>>
+<</nobr>><<set $statRed = 1>>
+You have successfully hired Cherry. Hopefully her chaotic luck and medical knowledge serve you well in your journey.
+
+[[Hire more companions|Surface Companions][$Cherry_LastT=$time]]
+[[Return to Outset Town|Surface Hub][$Cherry_LastT=$time]]
+
+
+:: Hire Cloud [surface]
+
+<<nobr>><<set $hiredCompanions.push($companionCloud)>>
+<<if $compTok == 1>>
+	<<set $compTok = 0>>
+<<else>>
+	<<set $dubloons -= $companionCloud.cost>>
+<</if>>
+<</nobr>><<set $bullRed = 2>>
+You have successfully hired Cloud! Hopefully he brings you a lot of joy and helps you along in your journey.
+
+<<include "Cloud Ability">>
+[[Hire more companions|Surface Companions][$Cloud_LastT=$time]]
+[[Return to Outset Town|Surface Hub][$Cloud_LastT=$time]]
+
+
+:: Hire Saeko [surface]
+
+<<nobr>><<set $hiredCompanions.push($companionSaeko)>>
+<<if $compTok == 1>>
+	<<set $compTok = 0>>
+<<else>>
+	<<set $dubloons -= $companionSaeko.cost>>
+<</if>>
+<</nobr>><<set $corRed = 5>><<set $abyssKnow = 1>>
+You have successfully hired Saeko. Hopefully her extensive knowledge of abyssal theory and corruption serve you well in your journey.
+
+[[Hire more companions|Surface Companions][$Saeko_LastT=$time]]
+[[Return to Outset Town|Surface Hub][$Saeko_LastT=$time]]

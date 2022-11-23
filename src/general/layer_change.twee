@@ -1,0 +1,135 @@
+:: Descend [general]
+<<set _layer = setup.layers[$currentLayer]>>
+_layer.descriptions.descent
+
+<<set _nextLayer = setup.layers[$currentLayer + 1]>>
+[["Stay on " + _layer.ordinal|_layer.passages.hub]]
+[["Descend down to the " + _nextLayer.ordinal|_nextLayer.passages.intro][$currentLayer = 2]]
+
+:: Ascend [general]
+<<set _layer = setup.layers[$currentLayer]>>
+<<set _previousLayer = setup.layers[$currentLayer - 1]>>
+
+Traveling back to the surface from here will take _layer.gameplay.ascentTime <<if setup.layers[$currentLayer].gameplay.ascentTime > 1>> days <<else>> day <</if>>, and will cost _layer.gameplay.ascentCost corruption.
+<<if $currentLayer == 1>>
+Leaving the abyss also requires that you don't have any negative corruption points even if you plan to come back.
+<</if>>
+
+<<if $currentLayer == 1 && $corruption < setup.layers[$currentLayer].ascentCost>>
+		You must have 0 or more corruption after traveling in order to return to the surface. Because the trip back to the surface costs _layer.gameplay.ascentCost corruption points, you must have a value of at least _layer.gameplay.ascentCost corruption points before ascending. Return to the Abyss and accept more Curses to be able to return to the surface world.
+<<else>>
+	<<if $DaedalusEquip==true >>\
+		<<if $DaedalusFly==false>>\
+			<<if $currentLayer == 1>>
+				Leaving the abyss also requires that you don't have any negative corruption points even if you plan to come back.
+			<<else>>
+				You are currently commited to simply walking to the next layer
+			<</if>>
+			[["Flap your wings and prepare to fly to the " + _previousLayer.ordinal|Ascend][$DaedalusFly=true]]
+		<<else>>
+			<<if setup.layers[$currentLayer].gameplay.ascentTime == 1>>
+				You are about to fly to the surface, which you can of course do if you want! On the other hand, it's only a one day walk anyways.
+			<<else>>
+				You are about to fly to the next layer
+			<</if>>
+			[["Maybe it's better to walk to the " + _previousLayer.ordinal|Ascend][$DaedalusFly=false]]
+		<</if>>\
+	<</if>>\
+	[[Continue your ascent|Ascend2]]
+<</if>>
+[["Turn back and continue your business on the " + setup.layers[$currentLayer].ordinal|setup.layers[$currentLayer].passages.hub]]
+
+:: Ascend2 [general nobr]
+<<set _layer = setup.layers[$currentLayer]>>
+<<nobr>>
+<<if $DaedalusFly==true>>
+	<<include "Companions Stranded">>
+<</if>>
+<<if $layersExit == 0>>
+	<<set $layersExit = 1>>
+	<<set $tempTime=setup.layers[$currentLayer].gameplay.ascentTime>>
+	<<include "GeneralTimeSetup">>
+	<<set $layersExitTime=$tempTime>>
+<</if>>
+
+<<for $layersExitTime; $layersExitTime >0; $layersExitTime-->>
+	<<set $tempTime=1>>
+	<<include "GeneralTimeStats">>
+<</for>>
+
+<<set $corruption -= (setup.layers[$currentLayer].gameplay.ascentCost - $corRed)>>
+
+<<set setup.layers[$currentLayer] = setup.layers[setup.layers[$currentLayer].id - 1]>>
+
+_layer.descriptions.ascent<br><br>
+
+<</nobr>><<masteraudio stop>><<audio setup.layers[$currentLayer].assets.audio volume 0.2 play loop>>
+
+<<include "Curse Descriptions">>
+<<if $TwinFly == true>>
+	<<include "Twin rejoin">>
+<</if>>
+
+<<set $eventArgs = ["ascend"]>>
+<<CheckEvents>>
+
+[["Return to the " + setup.layers[$currentLayer].ordinal|setup.layers[$currentLayer].passages.hub]]
+
+
+:: Escape Balloon[general]
+<<set _layer = setup.layers[$currentLayer]>>
+<<nobr>>
+<<set $currentLayer = 1>>
+<<if !isPlaying(setup.layers[$currentLayer].assets.audio)>>
+	<<masteraudio stop>>
+	<<audio setup.layers[$currentLayer].assets.audio volume 0.2 play loop>>
+<</if>>
+<</nobr>>
+_layer.descriptions.ascentBalloon
+
+<<set _previousLayer = setup.layers[setup.layers[$currentLayer].id - 1]>>
+<<if $corruption >= setup.layers[$currentLayer].gameplay.ascentCost>>[[Ascend to next layer|_previousLayer.passges.balloon][$corruption -= (setup.layers[$currentLayer].gameplay.ascentCost - $corRed), $escBalDepl=0]]<</if>>
+[[Hover on this layer to take in a Curse|setup.layers[$currentLayer].passages.curses]]
+[[Get off the balloon on this layer|setup.layers[$currentLayer].passages.hub][$escBalDepl=0]]
+
+
+:: Preview [image]
+<<set _layer = setup.layers[$currentLayer + 1]>>
+As you bring the charm up to your eye and gaze deep into the red crystal, your vision fades and a new image comes clearly into view:
+
+[img[setup.ImagePath+setup.layers[$currentLayer + 1].introImg]]
+
+@@.layerTitle;LAYER _layer..id - _layer..name.toUpperCase@@
+
+_layer..description.previewIntro
+
+Suddenly the image shifts and you see the splendor of the Relics that are available on this layer.
+
+[img[setup.ImagePath+setup.layers[$currentLayer + 1].assets.relicsImg]]
+
+As an image of the wonders you might find on this layer starts to come into focus, an intense feeling of humility washes through you.
+
+[img[setup.ImagePath+setup.layers[$currentLayer + 1].assets.wondersImg]]
+
+The mystical possibilities of the wonders fade from your view and you suddenly feel nauseous, as if a huge amount of miasma was suddenly sucked into your chest. You visualize the corruptions and Curses that may afflict you in the layer below.
+
+[img[setup.ImagePath+setup.layers[$currentLayer + 1].assets.cursesImg]]
+
+Finally the nauseous feeling passes but is replaced by a brief sense of terror as you get a glimpse of the threaths that await you on the layer
+
+[img[setup.ImagePath+setup.layers[$currentLayer + 1].assets.threatsImg]]
+
+Finally, the vision fades, leaving you standing once again where you were before, with only a brief sense of motion sickness as you orient yourself back to your physical body. As you look at the Gleam Dazer once again, you notice the Relic is cracked and broken.
+<<nobr>>
+<<if $ownedRelics.length==1>>
+	<<set $temp=0>>
+<<else>>
+	<<for $i = 0; $i < $ownedRelics.length && !$endloop; $i++>>
+		<<if $ownedRelics[$i].name=="Gleam Dazer" >>
+			<<set $temp=$i>>
+			<<set $endloop=false>>
+		<</if>>
+	<</for>>
+<</if>>
+<</nobr>>
+[[Return|$previewReturn][$soldRelics.push($ownedRelics[$temp]), $ownedRelics.deleteAt($temp), $endloop=false]]

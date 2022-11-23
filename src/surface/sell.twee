@@ -1,0 +1,47 @@
+
+:: Surface Sell 1 [surface]
+
+Here you can permanently sell any of your collected Relics for a nice haul of dubloons. You can use this to fund further expeditions<<if $debt > 0>>, pay off your debt,<</if>> or just get a nice payday at the end of your expedition.
+
+Choose the Relic you would like to sell:
+<<nobr>>
+<<for $i = 0; $i < $ownedRelics.length; $i++>>
+	<<capture $i>>
+		<<if $ownedRelics[$i].name=="Creepy Doll" && $creepydoll.affec > 5>>
+			You can't seem to part ways with the Creepy Doll<br>
+		<<elseif $ownedRelics[$i].name=="Chain of Lorelei">>
+			<<print $ownedRelics[$i].name>><<print " for ">><<print ($ownedRelics[$i].value + $sellAdd)>><<print " dubloons ">><<print "[[Sell|Surface Sell 1][$colwear=0, $dubloons += ($ownedRelics[$i].value + $sellAdd), $soldRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i)]]">><br>
+		<<elseif $ownedRelics[$i].name=="Heart-stealing Stole">>
+			<<print $ownedRelics[$i].name>><<print " for ">><<print ($ownedRelics[$i].value + $sellAdd)>><<print " dubloons ">><<print "[[Sell|Surface Sell 1][$hsswear=0, $dubloons += ($ownedRelics[$i].value + $sellAdd), $soldRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i)]]">><br>
+		<<elseif $ownedRelics[$i].name=="Sibyl Blend">>
+			<<print $ownedRelics[$i].name>><<print " for ">><<print ($ownedRelics[$i].value + $sellAdd)>><<print " dubloons ">><<print "[[Sell|Surface Sell 1][$SibylBuff=0, $dubloons += ($ownedRelics[$i].value + $sellAdd), $soldRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i)]]">><br>
+		<<elseif $ownedRelics[$i].name=="World Stone" && $LilyPromise>>
+			<<print $ownedRelics[$i].name>><<print " for ">><<print ($ownedRelics[$i].value + $sellAdd)>><<print " dubloons ">><<print "[[Sell|Surface Sell 1][$dubloons += ($ownedRelics[$i].value + $sellAdd), $soldRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i), $companionLily.affec-=(5-$hsswear)]]">> <br>You promised Lily she could use the World Stone at the end of your journey, selling it now will surely disappoint her greatly. <br>
+		<<elseif $ownedRelics[$i].name=="Everhevea">>
+			<<print $ownedRelics[$i].name>><<print " for ">><<print ($ownedRelics[$i].value + $sellAdd)>><<print " dubloons ">><<print "[[Sell|Surface Sell 1][$dubloons += ($ownedRelics[$i].value + $sellAdd), $soldRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i), $items[2].count-=2]]">><br>
+		<<elseif $ownedRelics[$i].name=="Daedalus Mechanism">>
+			<<print $ownedRelics[$i].name>><<print " for ">><<print ($ownedRelics[$i].value + $sellAdd)>><<print " dubloons ">><<print "[[Sell|Surface Sell 1][$DaedalusEquip = false, $DaedalusFly = false, $dubloons += ($ownedRelics[$i].value + $sellAdd), $soldRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i)]]">><br>
+		<<elseif $ownedRelics[$i].name=="Blind Divine">>
+			<<print $ownedRelics[$i].name>><<print " for ">><<print ($ownedRelics[$i].value + $sellAdd)>><<print " dubloons ">><<print "[[Sell|Surface Sell 1][$BDwear = false, $dubloons += ($ownedRelics[$i].value + $sellAdd), $soldRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i)]]">><br>
+		<<elseif $ownedRelics[$i].name=="Heavy is the Head">>
+			<<print $ownedRelics[$i].name>><<print " for ">><<print ($ownedRelics[$i].value + $sellAdd)>><<print " dubloons ">><<print "[[Sell|Surface Sell 1][$HeavyHeadwear= false, $dubloons += ($ownedRelics[$i].value + $sellAdd), $soldRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i)]]">><br>
+		<<elseif $ownedRelics[$i].name=="Moonwatcher" & $BionicEye >>
+			<<print $ownedRelics[$i].name>> You can not sell Relics that have become part of your body.<br>
+		<<elseif $ownedRelics[$i].name=="Glory's Grasp" & $BionicArm >>
+			<<print $ownedRelics[$i].name>> You can not sell Relics that have become part of your body.<br>
+		<<else>>
+			<<print $ownedRelics[$i].name>><<print " for ">><<print ($ownedRelics[$i].value + $sellAdd)>><<print " dubloons ">><<print "[[Sell|Surface Sell 1][$dubloons += ($ownedRelics[$i].value + $sellAdd), $soldRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i)]]">><br>
+		<</if>>
+	<</capture>>
+<</for>>
+<</nobr>>
+
+[[Continue your business on the surface|Surface Hub]]
+
+
+:: Surface Sell 2 [surface]
+
+The Relic $ownedRelics[$temp].name has been successfully sold and you've gotten your dubloon payment. You notice the person you sold it to quickly runs off, either to make use of it or sell it again in the everlasting chain of capitalism. Either way, you won't be getting that Relic back easily.<<run $ownedRelics.deleteAt($temp)>>
+
+[[Sell more Relics|Surface Sell 1]]
+[[Continue your business on the surface|Surface Hub]]

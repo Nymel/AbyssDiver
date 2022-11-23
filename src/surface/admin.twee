@@ -1,0 +1,49 @@
+:: Surface Admin [surface indoor]
+[img[setup.ImagePath+'Surface/administration.png']]
+
+As you approach a large building with stylings of marble and Roman pillars, you spot a sign declaring this to be the center of the town's administration. There seem to be a number of services that are provided here for people who need them, including managing debts and changing your legal name.
+
+For a small fee of 10 dubloons, you can change your legal name from $app.name to whatever you wish.
+[[Change your name|Surface Name]]
+<<if $hiredCompanions.some(e => e.name === "Cloud")>>
+
+You can use your companion Cloud's connections to borrow some money, but you will need to pay back an extra 20% as interest before you settle down for any voluntary habitation option.
+[[Borrow more money|Surface debt1]]
+<</if>><<if $debt > 0>>
+
+You currently have $debt dubloons of debt, which you can pay off now to allow yourself to settle down at a habitation option.
+[[Pay off your debt|Surface debt2]]
+<</if>>
+
+[[Continue your business on the surface|Surface Hub]]
+
+
+:: Surface Name [surface indoor]
+<<set $dubloons -= 10>>
+
+An elderly woman guides you through some surprisingly concise forms where you can fill out your new name, changing it for all official purposes.
+
+What is your new name?
+<<textbox "$app.name" "Nana" "Surface Hub">>
+
+
+:: Surface debt1 [surface]
+
+Cloud is willing to allow you to use his connections to fund your expedition, as long as you can pay back the loan after you're done, with interest of course.
+
+How many dubloons would you like to borrow?
+<<textbox "$temp" "">>
+
+[[Confirm|Surface Hub][$dubloons += parseInt($temp), $debt += parseInt(Math.round($temp * 1.2))]]
+<<back>>
+
+
+:: Surface debt2 [surface]
+
+In order to finally settle down at an ending, you must pay off your debt to Cloud's mysterious connections. You currently owe $debt dubloons of debt to them.
+
+How many dubloons would you like to pay back?
+<<textbox "$temp" "">>
+
+[[Confirm|Surface Hub][$dubloons -= parseInt($temp), $debt -= parseInt($temp)]]
+<<back>>

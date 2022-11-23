@@ -1,0 +1,57 @@
+:: Cherry Luck 1 [widget nobr]
+<<widget CherryLuck1>>
+	<<if $hiredCompanions.some(e => e.name === "Cherry")>>
+		<<if $visitL1 == 0>>
+		<<print "[[Use Cherry's chaotic luck|Layer1 Cherry]]">><br><</if>>
+	<</if>>
+<</widget>>
+
+:: Layer1 Cherry 2 [layer1]
+[img[setup.ImagePath+'Surface/cherry.png']]
+
+How would you like to use Cherry's chaotic luck ability?
+
+[[Get 2 random Relics for half cost|Cherry Luck 3][$cherryCurse = 2, $cherryRelic = 0]]
+[[Get 2 random Curses for +50% corruption|Cherry Luck 3][$cherryRelic = 2, $cherryRelic = 0]]
+[[Get 1 Relic and 1 Curse|Cherry Luck 3][$cherryCurse = 1, $cherryRelic = 1]]
+
+
+:: Cherry Luck 3 [nobr]
+<<for $i = 0; $i < $cherryCurse; $i++>>
+	<<GetValidCurses setup.layers[$currentLayer]>>
+	<<set _rng = random(0,$validCurses.length - 1)>>
+	<<set _selected = $validCurses[_rng]>>
+	<<UpdateCurseVariables _selected>>
+
+	<<set _extraCost = Math.floor((_selected.corr * 0.5))>>
+	<<set _cost = Math.floor((_selected.corr * 1.5))>>
+
+	You've acquired the curse _selected.name for a gain of _cost corruption.<br><br>
+
+	<<display _selected.passage>>
+
+	/* The UpdateCurseVariables doesn't account for the bonus corruption */
+	<<set $corruption += _extraCost>>
+<</for>>
+
+<<if $cherryCurse > 0>>
+	<br><br> 
+<</if>>
+
+<<for $i = 0; $i < $cherryRelic; $i++>>
+	<<GetValidRelics setup.layers[$currentLayer]>>
+	<<set _rng = random(0,$validRelics.length - 1)>>
+	<<set _selected = $validRelics[_rng]>>
+	<<set $ownedRelics.push(_selected)>>
+	<<set _cost = Math.floor(Math.max((_selected.corr - $corRed) / 2, 0))>>
+	<<set $corruption -= _cost>>
+	/* TODO: Refactor the relic pickup info so it can be displayed here without side-effects */
+
+	You've found the Relic _selected.name for a cost of _cost corruption 
+<</for>>
+
+<<if $cherryRelic > 0>>
+	<br><br> 
+<</if>>
+
+[[Continue on to the rest of the layer|setup.layers[$currentLayer].passages.hub]]

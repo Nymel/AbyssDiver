@@ -1,0 +1,278 @@
+<<CarryAdjust>>
+:: ShopInventory [nobr]
+<p>Here are the items available for your to spend your $dubloons dubloons on.</p>
+
+<p>Your team is currently carrying <<print setup.calcCarriedWeight().toFixed(1)>> kg and your team has a total carrying capacity of <<print Math.round($totalCarry)>> kg.</p>
+
+<div class="cards-grid">
+<<for _item range [$item2, $item1, $item3].concat($items.slice(4, 20), setup.itemMoney)>>
+<div>
+[img[setup.ImagePath + _item.image]]
+<h2><<print _item.name == "Empty Flask" ? "Flask" : _item.name>></h2>
+<p>
+<<if $items.some(e => e.name === _item.name && e.count >= _item.maxCount)>>
+<<if _item.name == "Pistol">>
+<<button `"Buy 6 bullets for " + $items[20].cost + " dubloons"` `"Buy Bullets"`>><</button>>
+<<else>>
+<button class="link-internal macro-button" type="button" disabled>Already bought</button>
+<</if>>
+<<elseif _item.cost>>
+<<button `"Buy for " + _item.cost + (_item.cost == 1 ? " dubloon" : " dubloons")` `"Buy " + _item.name`>><</button>>
+<<else>>
+<<button `"Exchange dubloons"` `"Exchange dubloons"`>><</button>>
+<</if>>
+</p>
+<p>
+<<include `_item.name + " Description"`>>
+<<if _item.weight>><br><br><<print _item.weight>> kg<</if>><<if _item.name == "Commerce Balloon" || _item.name == "Escape Balloon">>. Folds up for easy storage.<</if>>
+<<if _item.name == "Empty Flask">> empty, $item4.weight kg full<</if>>
+<<if _item.name == "Warding Brace">> each<</if>>
+</p>
+</div>
+<</for>>
+</div>
+
+:: Surface Shop 1 [surface cards indoor nobr]
+
+<p><<CarryAdjust>></p>
+<p>[[Continue your business on the surface|Surface Hub]]</p>
+
+
+<<include "ShopInventory">>
+
+
+:: Buy Water [item]
+
+[img[setup.ImagePath+$items[0].image]]
+
+How much water would you like to buy?
+
+<<textbox "$temp" "">>
+[[Confirm|previous()][$items[0].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[0].cost)]]
+<<back>>
+
+
+:: Buy Food Rations [item]
+
+[img[setup.ImagePath+$items[1].image]]
+
+How many days of food rations would you like to buy?
+
+<<textbox "$temp" "">>
+[[Confirm|previous()][$items[1].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[1].cost)]]
+<<back>>
+
+
+:: Buy Empty Flask [item]
+
+[img[setup.ImagePath+$items[2].image]]
+
+How many water flasks would you like to buy?
+
+<<textbox "$temp" "">>
+[[Confirm|previous()][$items[3].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[2].cost), $flaskMatrix[0]+= parseInt($temp)]]
+<<back>>
+
+
+:: Buy Medkit [item]
+
+[img[setup.ImagePath+$items[4].image]]
+
+How many medkits would you like to buy?
+
+<<textbox "$temp" "">>
+[[Confirm|previous()][$items[4].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[4].cost)]]
+<<back>>
+
+
+:: Buy Encyclopedia Abyssia [item]
+
+[img[setup.ImagePath+$items[5].image]]
+
+You have bought 1 copy of the Encyclopedia Abyssia.
+
+(Note: there is no additional benefit for buying more than 1 copy.)
+
+[[Confirm|previous()][$items[5].count += 1, $dubloons -= (1*$items[5].cost), $abyssKnow = 1]]
+<<back>>
+
+
+:: Buy Messenger Balloon [item]
+
+[img[setup.ImagePath+$items[6].image]]
+
+How many messenger balloons would you like to buy?
+
+<<textbox "$temp" "">>
+[[Confirm|previous()][$items[6].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[6].cost)]]
+<<back>>
+
+:: Buy Commerce Balloon [item]
+
+[img[setup.ImagePath+$items[7].image]]
+
+How many commerce balloons would you like to buy?
+
+<<textbox "$temp" "">>
+[[Confirm|previous()][$items[7].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[7].cost)]]
+<<back>>
+
+
+:: Buy Escape Balloon [item]
+
+[img[setup.ImagePath+$items[8].image]]
+
+How many escape balloons would you like to buy?
+
+<<textbox "$temp" "">>
+[[Confirm|previous()][$items[8].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[8].cost)]]
+<<back>>
+
+
+:: Buy Torch [item]
+
+[img[setup.ImagePath+$items[9].image]]
+
+How many days of torches would you like to buy?
+
+<<textbox "$temp" "">>
+[[Confirm|previous()][$items[9].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[9].cost)]]
+<<back>>
+
+
+:: Buy Flashlight [item]
+<<set $temp = 1>>
+[img[setup.ImagePath+$items[10].image]]
+
+You have bought 1 flashlight.
+
+(Note: there is no additional benefit for buying more than 1 flashlight.)
+[[Confirm|previous()][$items[10].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[10].cost)]]
+<<back>>
+
+
+:: Buy Rope [item]
+<<set $temp = 1>>
+[img[setup.ImagePath+$items[11].image]]
+
+You have bought a rope.
+
+(Note: there is no additional benefit for buying more than 1 rope.)
+
+[[Confirm|previous()][$items[11].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[11].cost)]]
+<<back>>
+
+
+:: Buy Compass [item]
+
+[img[setup.ImagePath+$items[12].image]]
+
+You have bought 1 compass.
+
+(Note: there is no additional benefit for buying more than 1 compass.)
+
+[[Confirm|previous()][$items[12].count += 1, $dubloons -= ($items[12].cost)]]
+<<back>>
+
+
+:: Buy Pistol [item]
+<<set $temp = 1>>
+[img[setup.ImagePath+$items[13].image]]
+
+You have bought a pistol.
+
+(Note: there is no additional benefit for buying more than 1 pistol.)
+
+[[Confirm|previous()][$items[13].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[13].cost), $items[20].count += 6]]
+<<back>>
+
+
+:: Buy Sword [item]
+<<set $temp = 1>>
+[img[setup.ImagePath+$items[14].image]]
+
+You have bought a sword.
+
+(Note: there is no additional benefit for buying more than 1 sword.)
+
+[[Confirm|previous()][$items[14].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[14].cost)]]
+<<back>>
+
+
+:: Buy Scuba Gear [item]
+<<set $temp = 1>><<set $scuba = 1>>
+[img[setup.ImagePath+$items[15].image]]
+
+You have bought a set of scuba gear.
+
+(Note: there is no additional benefit for buying more than 1 set of scuba gear.)
+
+[[Confirm|previous()][$items[15].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[15].cost)]]
+<<back>>
+
+
+:: Buy Warding Brace [item]
+
+[img[setup.ImagePath+$items[16].image]]
+
+How many warding braces would you like to buy?
+
+(Note: You are only allowed to buy 2 warding braces unless you have an effect or combination of Relics that specifically would allow you to buy more.)
+
+<<textbox "$temp" "">>
+[[Confirm|previous()][$items[16].count += Math.min(parseInt($temp), 2), $dubloons -= Math.min((parseInt($temp)*$items[16].cost), 2*$items[16].cost), $corruption += 20 * Math.min($temp, 2)]]
+<<back>>
+
+
+:: Buy Smartphone [item]
+<<set $temp = 1>>
+[img[setup.ImagePath+$items[17].image]]
+
+You have bought a smartphone.
+
+(Note: there is no additional benefit for buying more than 1 smartphone.)
+
+[[Confirm|previous()][$items[17].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[17].cost), $abyssKnow = 1]]
+<<back>>
+
+:: Buy Inn Room Pass [item]
+<<set $temp = 1>>
+[img[setup.ImagePath+$items[18].image]]
+
+You have bought an inn room pass. Feel free to take a break and eat and drink your fill if you're ever feeling hungry or thirsty. (This will refill your food at water to at least 0, if you are currently in a deficit of food or water)
+
+(Note: there is no additional benefit for buying more than 1 inn room pass.)
+
+[[Confirm|previous()][$items[18].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[18].cost)]]
+<<back>>
+
+
+:: Buy Relic Workshop Pass [item]
+<<set $temp = 1>>
+[img[setup.ImagePath+$items[19].image]]
+
+You have bought a Relic workshop pass. Feel free to take advantage of the facilities when you have a Relic you want to modify.
+
+(Note: there is no additional benefit for buying more than 1 Relic workshop pass.)
+
+[[Confirm|previous()][$items[19].count += parseInt($temp), $dubloons -= (parseInt($temp)*$items[19].cost)]]
+<<back>>
+
+
+:: Buy Bullets [item]
+
+[img[setup.ImagePath+$items[20].image]]
+
+How many sets of 6 bullets would you like to buy?
+
+<<textbox "$temp" "">>
+[[Confirm|previous()][$items[20].count += (parseInt($temp) * 6), $dubloons -= (parseInt($temp)*$items[20].cost)]]
+<<back>>
+
+:: Exchange dubloons [surface]
+
+Cashing out, really? Where is your sense of adventure?
+
+...I'm going to assume you clicked that button by mistake...
+
+<<back>>

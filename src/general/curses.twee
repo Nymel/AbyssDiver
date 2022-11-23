@@ -1,0 +1,88 @@
+:: Default Curses [image layer1]
+<<set _layer = setup.layers[$currentLayer]>>
+[img[setup.ImagePath+setup.layers[$currentLayer].assets.cursesImg]]<<GenderCorrected>>
+_layer.name
+<<CurseTable>>
+
+:: Curse Table [widget general curse]
+<<widget "CurseTable">>
+	<<GetValidCurses>>
+	<<nobr>>
+	<<set _table =  "<table>" >>
+	<<for $i = 0; $i < setup.layers[$currentLayer].gameplay.curses.length; $i++>>
+		<<set _current = setup.layers[$currentLayer].gameplay.curses[$i]>>
+		<<if $validCurses.some(e => e.name === _current.name)>>
+			<<set _table += "<tr><td>[[Take on " + _current.name + " | Take on Curse][$curse = _current]]</td>">>
+			<<if $ownedRelics.some(e => e.name === "Managed Misfortune")  && "$StoredCurse.name" != _current.name>>
+				<<if $ManagedMisfortuneActive>>
+					<<set _table += "<td>You can not store a new Curse while you are still affected by the Curse in Managed Misfortune.</td>">>
+				<<else>>
+					<<set _table += "<td>or [[Store this Curse in Managed Misfortune|Default Curses][$StoredCurse = _current]]</td>">>
+				<</if>>
+			<</if>>
+			<<set _table += "</tr>">>
+		<<else>>
+			<<set _table += "<tr><td></td><td></td></tr><tr><td></td><td></td></tr><tr><td></td><td></td></tr>">>
+		<</if>>
+	<</for>>
+	<<set _table +=  "</table>" >>
+	<</nobr>>
+	<<print _table>>
+
+	[[Allow the Abyss to bestow a random Curse upon you|Curses Random]]
+<</widget>>
+
+/* Requires $curse to be the curse that's being added*/
+:: Take on Curse [general curse]
+	<<UpdateCurseVariables $curse>>
+	<<display $curse.passage>>
+
+	[["Accept more Curses from the " + setup.layers[$currentLayer].ordinal|setup.layers[$currentLayer].passages.curses]]
+
+	<<if $escBalDepl==0>>
+		[["Return to exploring " + setup.layers[$currentLayer].ordinal |setup.layers[$currentLayer].passages.hub]]
+	<<else>>
+		[[Return to your balloon|setup.layers[$currentLayer].passages.balloon]]
+	<</if>>
+
+:: Update Curse Variables [widget]
+<<widget "UpdateCurseVariables">>
+	<<set $playerCurses.push($args[0])>>
+	<<set $corruption += $args[0].corr>>
+
+	<<if $args[0].type == "Gender">>
+		<<set $GenderLog.push($args[0])>>
+	<<elseif $args[0].type == "Libido">>
+		<<set $LibidoLog.push($args[0])>>
+	<</if>>
+<</widget>>
+
+:: Get Valid Curses [widget nobr general curse]
+<<widget "GetValidCurses">>
+	<<set $validCurses = setup.layers[$currentLayer].gameplay.curses>>
+		/* TODO: Fix this. I'm not sure why it doesn't recognize the variable in this circumstance. I'm guessing it's an odd scope issue
+		When I add "|| $playerCurses.some(e => e.mutually_exclusive.some(val.name))"
+		I get this error "bad evaluation: val.name is not a function" 
+		So I'm removing this for now*/
+
+	/* Ideally the curse would include the max-stacks and there would be another accessable variable for current stacks
+		Since I don't want to change existing variables I just hard-coded it for the only layer 1 curse with max stacks */
+	<<run $validCurses.deleteWith(function (val) {
+		return ($playerCurses.some(e => e.name === val.name) and val.name != "Dizzying Heights") ||
+			(val.name ==="Dizzying Heights" and $HeightLog.filter(e => e.name === "Dizzying Heights") < 5);
+	})>>
+<</widget>>
+
+:: Curses Random [general curse]
+<<GetValidCurses setup.layers[$currentLayer]>>
+
+<<if $validCurses.length >= 0>>
+	<<set _rng = random(0,$validCurses.length - 1)>>
+	<<set _selected = $validCurses[_rng]>>
+	The Abyss has chosen for you to be Cursed with _selected.name. You may not have chosen this, but fate has placed the burden upon you. Accept your Curse and the change in life that comes with it.
+
+	<<print "[[Take on " + _selected.name + " | Take on Curse][$curse = _selected]]">>
+<<else>>
+	There are no Curses left for you to take on this layer.
+	<<back>>
+<</if>>

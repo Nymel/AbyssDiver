@@ -1,0 +1,147 @@
+:: Default Intro [widget]
+<<widget "DefaultIntro">>
+    <<DefaultMusic>>
+    <<DefaultIntroDescription>>
+<</widget>>
+
+:: Default Intro Description [widget]
+<<widget "DefaultIntroDescription">>
+    <<set _layer = setup.layers[$currentLayer]>>
+	@@_layer.name
+	[img[setup.ImagePath+_layer.assets.introImg]]
+	!Layer _layer.id - _layer.name
+	@@_layer.descriptions.intro
+    <<set $eventArgs = ["intro"]>>
+    <<CheckEvents $eventArgs>>
+	[["Walk through the " + setup.layers[$currentLayer].ordinal + " of the Abyss"|setup.layers[$currentLayer].passages.hub]]
+<</widget>>
+
+:: Default Hub [widget nobr]
+<<widget "DefaultHub">>
+    <<set _layer = setup.layers[$currentLayer]>>
+	<<checkTime>>
+	<<CarryAdjust>>
+	_layer.descriptions.hubIntro<br><br>
+	<<DefaultHubVariableSetup>>
+	<<DefaultMusic>>
+	<<DefaultForageMessage>>
+    <<set $eventArgs = ["hub"]>>
+    <<CheckEvents $eventArgs>>
+	<<DefaultHubSelectionMenu>>
+<</widget>>
+
+:: Default Music [widget nobr general]
+<<widget "DefaultMusic">>
+	<<masteraudio stop>><<audio setup.layers[$currentLayer].assets.audio volume 0.2 play loop>>
+<</widget>>
+
+:: Default Hub Variable Setup [widget nobr general]
+<<widget "DefaultHubVariableSetup">>
+	<<set $currentLayer = 1>>
+	<<if $visitL1 == 0>>
+		<<set $layerTemp = 8>>
+		<<set $visitL1 = 1>>
+	<<elseif $secondVisitL1 == 0>>
+		<<set $secondVisitL1 = 1>>
+		<<set $layerTemp = 18>>
+	<<else>>
+		<<set $layerTemp = random(0,20)>>
+	<</if>>
+	<<if $layerTemp >= (18 - $hiredCompanions.length) && $layerTemp < 19 && $hiredCompanions.length > 0>>
+	<<include "Companion Layer Interaction">>
+	<<elseif $layerTemp >= 19>>
+	<<include "Curse Descriptions">><br><br>
+	<</if>>
+<</widget>>
+
+:: Default Hub Selection Menu[widget general]
+<<widget "DefaultHubSelectionMenu">>
+	<<nobr>>
+    What do you want to do while you're here?<br><br>
+    [[Use Items and Relics]]<br>
+    <<if $hiredCompanions.length > 0 || $items[21].count>0>>
+        [[Interact with your party|Party overview]] <<CheckParty>>
+	<</if>>
+    <</nobr>>
+	[[Learn about the threats on this layer|Default Threats]]
+	[[Check for food and water you can forage for|setup.layers[$currentLayer].passages.forage]]
+	[["Search for Relics"|Default Relics]]
+	[[Take on Curses to purge your corruption|Default Curses]]
+	[[Look for any wonders you can take advantage of|setup.layers[$currentLayer].passages.wonders]]
+	[["View the " + setup.layers[$currentLayer].ordinal + " habitation option"|setup.layers[$currentLayer].passages.habitation]]
+
+	[[Look up towards the surface|Ascend]]
+	[[Look down at the next layer|Descend]]
+
+	<<if $escBalDepl==0>>
+		[["Return to exploring " + setup.layers[$currentLayer].ordinal|setup.layers[$currentLayer].passages.hub]]
+	<<else>>
+		[[Return to your balloon|setup.layers[$currentLayer].passage.balloon]]
+	<</if>>
+<</widget>>
+
+:: Default Forage Message [widget general nobr]
+<<widget "DefaultForageMessage">>
+<<if $forageWater == 1>>
+	<<print "You are currently foraging for your daily water on this layer">><br>
+<<else>>
+	<<print "You are not currently foraging for your daily water on this layer">><br><</if>>
+<<if $forageFood == 1>>
+	<<print "You are currently foraging for your daily food on this layer">><br>
+<<else>>
+	<<print "You are not currently foraging for your daily food on this layer">><br><</if>>
+<br>
+<</widget>>
+
+:: Default Ballon Message [widget general]
+<<widget "BalloonMessage">>
+	<<if $escBalDepl==0>>
+		[["Return to exploring " + setup.layers[$currentLayer].ordinal|setup.layers[$currentLayer].passages.hub]]
+	<<else>>
+		[[Return to your balloon|Escape Balloon L1]]
+	<</if>>
+<</widget>>
+
+:: Pay Debt [widget nobr general]
+<<widget "PayDebt">>
+	<<nobr>>
+		<<if $dubloons < 0>>
+			<<set $debt += parseInt(Math.round(-1 * $dubloons * 1.2))>>
+			<<set $dubloons = 0>>
+		<</if>>
+	<</nobr>>
+<</widget>>
+
+:: Default Relics [cards nobr]
+<<set _layer = setup.layers[$currentLayer]>>
+<p><<checkTime>></p>
+<h1>Relics</h1>
+<p>
+
+@@.floatr;[img[setup.ImagePath+'icon.png']]@@
+_layer.descriptions.relics
+</p>
+
+<p>[["Continue exploring the " + setup.layers[$currentLayer].ordinal|setup.layers[$currentLayer].passages.hub]]</p>
+
+<<set $relicNames = setup.layers[$currentLayer].gameplay.relics.map(function (val) {
+	return val.name;
+})>>
+
+<<RelicGrid `$relicNames`>>
+
+<p>[["Continue exploring the " + setup.layers[$currentLayer].ordinal|setup.layers[$currentLayer].passages.hub]]</p>
+
+:: Default Threats [image ]
+
+[img[setup.ImagePath+setup.layers[$currentLayer].assets.threatsImg]]
+
+[["Return to exploring layer " + setup.layers[$currentLayer].ordinal|setup.layers[$currentLayer].passages.hub]]
+
+:: Get Valid Relics [widget nobr]
+<<widget GetValidRelics>>
+	<<set $validRelics = setup.layers[$currentLayer].gameplay.relics>>
+	<<run $validRelics.deleteWith(function (val) {
+		return $ownedRelics.some(e => e.name === val.name);
+	})>>
+<</widget>>

@@ -1,0 +1,72 @@
+:: Surface Inn [surface indoor nobr]
+
+[img[setup.ImagePath+'Surface/Inn Room.png']]
+<br><br>
+
+<<if $items[18].count > 0 && ($items[0].count < 1 || $items[1].count < 1)>>
+	Due to your inn pass, you're able to eat and drink your fill, overcoming any deficits you've built up over time after you visit the Inn.
+	<br><br>
+	<<set $items[0].count = Math.max($items[0].count, 0)>>
+	<<set $items[1].count = Math.max($items[1].count, 0)>>
+<</if>>
+
+<<if $innUsed != $time>>
+	You can eat and drink enough to make yourself extra full and save a day of food and water on your travels.<br>
+	[[Eat and drink the delicious food and drink|Surface Inn][$items[0].count += 1, $items[1].count += 1, $innUsed = $time]]
+<<else>>
+	You are already full, but you can come back another day to get more freshly cooked meals and clear, cool water when you come back later.
+<</if>>
+<br><br>
+
+<<include "Inn Storage">>
+
+[[Return to Outset Town|Surface Hub]]
+
+
+:: Inn Storage [nobr]
+
+<<if $innDubloons > 0>>
+	You can retrieve all of the dubloons you have stored in your inn room. You currently have $innDubloons stored.<br>
+	[[Retrieve your dubloons|passage()][$dubloons += $innDubloons, $innDubloons = 0]]
+	<br><br>
+<</if>>
+
+<<if $dubloons > 0>>
+	You can store any of your dubloons at the inn, in case you'd like to pick them up later. If you'd like to stash your dubloons, enter the amount you'd like to store and press Stash.<br>
+	<<textbox "$temp" "0">>
+	[[Stash your dubloons|passage()][$dubloons -= parseInt($temp), $innDubloons += parseInt($temp)]]
+	<br><br>
+<</if>>
+
+<<if $innRelics.length > 0>>
+	You can pick up any of the Relics you've previously stored in your inn room:<br>
+	<<for $i = 0; $i < $innRelics.length; $i++>>
+		<<capture $i>>
+			<<print $innRelics[$i].name + " [[Retrieve|passage()][$soldRelics.deleteWith(r => r.name === $innRelics[$i].name), $ownedRelics.push($innRelics[$i]), $innRelics.deleteAt($i)]]">><br>
+		<</capture>>
+	<</for>>
+	<br>
+<</if>>
+
+<<if $ownedRelics.length > 0>>
+	You can store any Relics you're holding here for safe keeping or if you just want to reduce the weight you're holding.
+	Choose a Relic you would like to store here at the inn:<br>
+	<<for $i = 0; $i < $ownedRelics.length; $i++>>
+		<<capture $i>>
+			<<if $ownedRelics[$i].name=="Creepy Doll" && $creepydoll.affec > 5>>
+				You can't seem to part ways with the Creepy Doll<br>
+			<<elseif $ownedRelics[$i].name=="Chain of Lorelei">>
+				<<print $ownedRelics[$i].name>><<print " [[Store|passage()][$colwear=0, $soldRelics.push($ownedRelics[$i]), $innRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i)]]">><br>
+			<<elseif $ownedRelics[$i].name=="Heart-stealing Stole">>
+				<<print $ownedRelics[$i].name>><<print " [[Store|passage()][$hsswear=0, $soldRelics.push($ownedRelics[$i]), $innRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i)]]">><br>
+			<<elseif $ownedRelics[$i].name=="Sibyl Blend">>
+				<<print $ownedRelics[$i].name>><<print " [[Store|passage()][$SibylBuff=0, $soldRelics.push($ownedRelics[$i]), $innRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i)]]">><br>
+			<<elseif $ownedRelics[$i].name=="Everhevea">>
+				<<print $ownedRelics[$i].name>><<print " [[Store|passage()][$soldRelics.push($ownedRelics[$i]), $innRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i), $items[2].count-=2]]">><br>
+			<<else>>
+				<<print $ownedRelics[$i].name>><<print " [[Store|passage()][$soldRelics.push($ownedRelics[$i]), $innRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i)]]">><br>
+			<</if>>
+		<</capture>>
+	<</for>>
+	<br>
+<</if>>

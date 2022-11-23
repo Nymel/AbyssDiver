@@ -1,0 +1,88 @@
+:: Take on Libido Reinforcement A [layer1, curse]
+You have successfully taken on the $curse1.name Curse. Hopefully you are ok with accepting the permanent consequences.
+
+:: Take on Gender Reversal A [layer1, curse]
+You have successfully taken on the $curse2.name Curse. Hopefully you are ok with accepting the permanent consequences.
+
+:: Take on Asset Robustness A [layer1, curse]
+<<if $app.sex=="male" && $app.breastsCor>0 >><<set $GenderLog.push("Interact A")>><</if>>
+You have successfully taken on the $curse3.name Curse. Hopefully you are ok with accepting the permanent consequences.
+
+:: Take on Clothing Restriction A [layer1, curse]
+A sudden compulsion washes over you, you need to get of your accessories, immediately. It's like they have suddenly become an unbearably uncomfortable burden on your mind. Whether it is a hat, a necklace, or a ring, you cannot accept keeping it on your body for any longer.
+
+While it doesn't cause you any physical pain or anything like that, you do feel a fixation on removing it as soon as possible, as if you had a form of selective OCD that made your remove all of your accesories. And you know that from now on, you won't be wearing any accesories in the future, at least not of your own free will.
+
+:: Take on Shrunken Assets [layer1, curse, curse]
+<<nobr>>
+<<if $app.sex == "male">>
+You feel an intense squeezing sensation between your legs, as if something was squeezing your cock extremely tightly, but not in a pleasurable way. It isn't quite painful either, almost like someone had their hand gripped around your girth and squeezed as hard as they could all around it, but without any movement or sensations of rubbing the surface, just the squeezing. And it just keeps squeezing as if the pressure was resisting your current size and was pushing part of you back into your body.<br><br>
+
+After a few moments of this sensation, it fades, leaving you to deal with the aftermath. When you check yourself, it looks like your penis has almost entirely disappeared, leaving only a small nub, more reminiscent of a clitoris than your previous size. A quick mental estimation tells you that it is now only 1cm (0.5in) long, with a proportional width. This is quite a dramatic change, hopefully you can come to accept your new body.
+<<elseif $app.sex == "female">>
+You feel an intense squeezing sensation on your breasts, but it isn't like someone's hand squeezing them in a pleasurable way. It feels like a pressure evenly distributed across them, like if you're deep underwater, but only on your chest. After a moment, the pressure increases, feeling like it is pushing your flesh into your abdomen, even if there's nowhere for it to go.<br><br>
+
+Instinctively, your hands move up to your chest in response to the strange sensation, and you feel your flesh squirming and pulsing under your fingers. It feels like your body is trying to burst out of some imaginary constraint, but is failing, and each attempt is more feeble than the last. And after a few more attempts, your body succumbs and the sensation fades, leaving you with much smaller assets than you had before. A quick evaluation tells you that you seem to have AA cup breasts now, with no way to increase that size.
+<<elseif $app.sex == "futa">>
+You feel an intense squeezing sensation between your legs, as if something was squeezing your cock extremely tightly, but not in a pleasurable way. It isn't quite painful either, almost like someone had their hand gripped around your girth and squeezed as hard as they could all around it, but without any movement or sensations of rubbing the surface, just the squeezing. And it just keeps squeezing as if the pressure was resisting your current size and was pushing part of you back into your body.<br><br>
+
+After a few moments of this sensation, it fades, leaving you to deal with the aftermath. When you check yourself, it looks like your penis has almost entirely disappeared, leaving only a small nub, more reminiscent of a clitoris than your previous size. A quick mental estimation tells you that it is now only 1cm (0.5in) long, with a proportional width.<br><br>
+
+Just when you feel like the effect is done, you feel an intense squeezing sensation on your breasts, but it isn't like someone's hand squeezing them in a pleasurable way. It feels like a pressure evenly distributed across them, like if you're deep underwater, but only on your chest. After a moment, the pressure increases, feeling like it is pushing your flesh into your abdomen, even if there's nowhere for it to go.<br><br>
+
+Instinctively, your hands move up to your chest in response to the strange sensation, and you feel your flesh squirming and pulsing under your fingers. It feels like your body is trying to burst out of some imaginary constraint, but is failing, and each attempt is more feeble than the last. And after a few more attempts, your body succumbs and the sensation fades, leaving you with much smaller assets than you had before. A quick evaluation tells you that you seem to have AA cup breasts now, with no way to increase that size.
+<</if>>
+<</nobr>>
+
+:: Take on Hair Removal [layer1, curse]
+You suddenly feel a tingling sensation over your whole body below your scalp, which suddenly becomes very itchy as each of the hair follicles on your body expels any hair they held within them and then shrivels up forever. A cursory feel of your body reveals that your skin is much smoother, aside from any existing marks or scars you have. It feels as if your whole body has been waxed, but even more than that in some way, as you know none of the hair will ever return, nor could you create a facsimile of hair anywhere on your body.
+
+You shiver at the sensation, but it quickly passes. You're left with shaking the remaining residue out of your clothes so that it doesn't cause you to get itchy later on your journey.
+
+:: Take on Perma-dye [layer1, curse]
+A brief wave of ice washes through your hair, or at least that's what it feels like as the pigments in your hair seem to have instantaneously swapped with new ones.
+
+After the sudden wash, you instinctively reach a hand above your head to grab a lock of your hair and bring it before your eyes to see what's happened to it. The hair feels like a completely normal temperature, so that was apparently only an illusory sensation, but the change of color was real. You can see that your hair seems as if it had always been its new color. Now, what color do you see?
+
+Please enter your new hair color:
+
+<<textbox "$curse7.variation" "turquoise" "Layer1 Curses">>
+
+:: Take on Freckle Speckle [layer1, curse]
+A brief period of tingling on your cheeks was immediately followed by a similar tingling over your whole body. As you reach up one of your hands, you notice that a number of distinctive freckles cover your skin over your entire body, being especially noticeable on your face.
+
+:: Take on Knife-ear [layer1, curse, curse]
+Your ears suddenly have an incredible itching on their tip, and as you reach upwards to feel what's going on, you feel the flesh reshaping itself into a new form. The flesh flows outward, extending the itching sensation, as your ears become longer and gain a pointed tip. The itching fades, but your ears still feel a little more sensitive than they did before.
+
+It seems that you now look like either an elf out of a storybook or someone who really wants to look like a elf, for whatever reason. Hopefully you don't mind the occasion odd look if you return to the surface like this.
+
+:: Take on Dizzying Heights [layer1, curse]
+<<set $dizzyCount +=1>>
+You have successfully taken on the $curse10.name Curse. Hopefully you are ok with accepting the permanent consequences.
+<<nobr>>
+<<if $HeightIncrease == 0>>
+	Would you like to increase or descrease your height?<br>
+	<<radiobutton "$HeightIncrease " -1 checked>> Decrease<br>
+	<<radiobutton "$HeightIncrease " 1 >> Increase<br>
+<<elseif $HeightIncrease == 1>>
+	You feel yourself growing even more.<br>
+<<else>>
+	You feel yourself shrinking even more.<br>
+<</if>>
+<</nobr>>
+
+:: Take on Increased Sensitivity [layer1, curse]
+A brief tingle passes between your legs<<if $app.breasts > 0>> and your breasts<</if>>, causing you to immediately come to attention at the momentary sensitivity. You have to stop as you are instantly made aware of the sensation of your underwear touching your skin, and your own movements have become distracting.
+
+<<if $app.sex == "female">>You can feel yourself moisten under your panties, causing you to figdet slightly with your legs, causing you to once again feel the touch of the fabric against yourself, exacerbating the issue.<<else>>You can feel yourself harden in your pants, causing you to rub against them even harder, creating a cycle that results in you being as erect as you have ever been in your life.<</if>>
+
+You pause for a moment to catch your breath and wait for the sensation to pass, but it never does. It seems this is your new baseline of sensitivity from now on. You won't be going back to the way things were before, you'll just need to learn to deal with the new stimulation of any touch between your legs. It should be very pleasant when you're intentionally taking advantage of your newly increased sensitivity though.
+
+:: Take on Refractory Refactorization [layer1, curse]
+<<nobr>>
+<<if $playerCurses.some(e => e.name === "Increased Sensitivity")>>
+<<set $curse12.appDesc = "You do not have a refractory period, and can orgasm several times in a row. Sex is like a long sequence of orgasms for you. ">>
+<<else>>
+<<set $curse12.appDesc = "You do not have a refractory period, and can orgasm several times in a row. ">>
+<</if>>
+<</nobr>>

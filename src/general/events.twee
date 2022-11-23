@@ -1,0 +1,64 @@
+/* Arg1 is a list of event flags */
+:: Check Events [widget general nobr]
+<<widget "CheckEvents">>
+    <<for $eventIndex = 0; $eventIndex < setup.layers[$currentLayer].events.length; $eventIndex++>>
+        <<set _event = setup.layers[$currentLayer].events[$eventIndex]>>
+        <<set _triggerEvent = true>>
+
+        /* Events included in the $flags will not be triggered */
+        /* Repeatable events will not automatically be added after triggering */
+        <<if $flags.includes(_event.id)>>
+            <<continue>>
+        <</if>>
+
+        <<for $flagIndex = 0; $flagIndex < _event.flags.length; $flagIndex++>>
+            <<set _flag = _event.flags[$flagIndex]>>
+            /* Check for situation flags (passed in as arg1) */
+            /* ascent, hub, forageFood, forageWater */
+            <<if $args[0].some(e => e === _flag)>>
+                <<continue>>
+            <<elseif $hiredCompanions.some(e => e.name === _flag)>>
+                <<continue>>
+            <<elseif _flag == "minDubloons" && $dubloons >= _event.minDubloonsArg>>
+                <<continue>>
+            <<elseif _flag == "minRelicValue">>
+                <<set _total_value_relics=0>>
+                <<for _i = 0; _i < _ownedRelics.length; _i++>>
+                    <<set _total_value_relics = $ownedRelics[$i].value + _total_value_relics>>
+                <</for>>
+                <<if _total_value_relics >= _event.minRelicValueArg>>
+                    <<continue>>
+                <</if>>
+            <<elseif _flag == "maxCompanions" && $companions <= _event.maxCompanionsArg>>
+                <<continue>>
+            <<elseif _flag == "forageFood" && $forageFood != 0>>
+                <<continue>>
+            <<elseif _flag == "forageWater" && $forageWater != 0>>
+                <<continue>>
+            <<elseif _flag == "chance" && _event.chanceArg <= random(0,20)>>
+                <<continue>>
+            <<elseif _flag == "hasFlag" && $flags[$enabledFlagArg]>>
+                <<continue>>
+            <<elseif _flag == "flagNotSet" && !$flags.includes(_event.$noFlagArgs)>>
+                <<continue>>
+            <</if>>
+            <<set _triggerEvent = false>>
+            <<break>>
+        <</for>>
+        <<if _triggerEvent>>
+            <<if !_event.repeatable>>
+                <<run $flags.push(_event.id)>>
+            <</if>>
+            <<if !_event.redirect && _event.passage != "">>
+                [[_event.passageText|_event.passage]]<br>
+                <<break>>
+            <<elseif _event.redirect && passage != "">>
+                <<goto _event.passage>>
+                <<break>>
+            <<else>>
+                _event.text
+                <<break>>
+            <</if>>
+        <</if>>
+    <</for>>
+<</widget>>

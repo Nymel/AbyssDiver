@@ -1,0 +1,15 @@
+:: Layer1 1 [layer1]
+<<set $currentLayer = 1>>
+<<PayDebt>>
+<<DefaultIntro>>
+
+:: Layer1 Hub [layer1]
+<<set $currentLayer = 1>>
+<<DefaultHub>>
+
+:: Escape Balloon L1 [layer1]
+<<set $currentLayer = 1>>
+<<display "Escape Balloon">>
+
+:: Layer1 Preview [image layer1]
+<<goto "Preview">>

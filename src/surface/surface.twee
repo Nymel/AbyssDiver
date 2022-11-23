@@ -1,0 +1,104 @@
+:: Surface Hub [surface]
+
+<<nobr>>
+<<set $currentLayer = 0>>
+<<if !isPlaying("surface")>>
+	<<masteraudio stop>><<audio "surface" volume 0.2 play loop>>
+<</if>>
+<<if $items[22].count>0>>
+	<<set $warmCloth=1>>
+<</if>>
+<<CarryAdjust>><<checkTime>>
+<</nobr>><<if $dubloons >= 0 || $hiredCompanions.some(e => e.name === "Cloud")>>Here at Outset Town you can spend your $dubloons dubloons on hiring companions and buying equipment for your journey. On return visits you can also sell Relics you've found in the abyss or settle down on the surface permanently.
+
+<<nobr>>
+<<if $visitL1 == 0>>Whenever you're ready, feel free to start your expedition into the Abyss!<br>
+<<else>>
+Whenever you're ready, you can continue your expedition into the Abyss!
+<</if>>
+<<set $layerTemp = random(0,20)>>
+<<if $layerTemp == 1>>
+<br><br>As you walk around town, you notice a woman with hot pink hair and enormous breasts trying to haggle the price of a Relic up. She holds a relatively mundane cup up towards the merchant in apparent exasperation, but he seems unfazed and simply shrugs his shoulders. After a moment of waiting, she sighs and hands him the cup, receiving a small amount of dubloons in return, seemingly unsuccessful in her bargaining attempt.<br><br>
+<<elseif $layerTemp == 2>>
+<br><br>As you make your way to your destination, you notice an especialy burly man with a fluffy dog tail behind him and floppy dog ears on top of his head crying quite loudly by the side of the street. He seems to be hugging a more average-looking man, who in turn seems to be trying to comfort him. The large dog-man gestures to his crotch (where you notice a sizable bulge), and the smaller man winces, but hugs him tighter attempting to reassure him once again before they walk into the local inn together, holding hands.<br><br>
+<<elseif $layerTemp == 3>>
+<br><br>Near the entrance to the Abyss, you notice a woman offering something to divers who are about to venture downwards. Taking a closer look, you can see that she's offering basic supplies with fancy labels at a significant markup from the shop prices! You can get "Abyss-proven" water or "Miasma-resistant" food for double the cost. And while most divers seem to be ignoring her, a few hesitate to hear her sales pitch and a few more of those end up buying the overpriced supplies.<br><br>
+<<elseif $layerTemp == 4>>
+<br><br>An apparently quite young boy, seemingly barely even a teenager, seems to be getting into a fight with a very scantily-clad woman in front of a non-descript building with a few similarly-dressed women inside watching. At first the words are indistinct, but then the boy gets louder as he tries to offer money and is refused for obvious reasons. He tries to give some justification and offer the money again, but the woman calls a large man in an imposing security uniform who escorts him away from the premises. The boy complains, but ultimately walks away disappointed.<br><br>
+<<elseif $layerTemp == 5>>
+<br><br>A quiet black-haired young woman, who you seem to remember from the companion area, seems to be sitting on a bench in the middle of town with a notebook in her lap. She seems to be writing vigorously whenever an abnormal looking person walk by, but becomes still when no one atypical is in sight. When she notices you looking at her, she meets your eyes for a moment, but then goes back to her previous behavior of intermittent rapid scrawls when someone interesting happens by the town center.<br><br>
+<<elseif $layerTemp == 6>>
+<br><br>As you walk thruogh town, you spot a gentle-looking young man with ruffled brown hair trading some standard items to a pair of prospective divers. As he finishes the transaction he glances over at you and his eyes widen for a split second, but then he returns to his neutral smiling face and continues on his way. Why did you bother to sit around and watch some random person in the background anyway? You've got to get back to your own adventure!<br><br>
+<</if>>
+
+/*Debug links:
+<</nobr>>
+[[Drop IQ|Surface Hub][$IQdrop+=5]]
+[[phoenix obol|Pick up the Phoenix Obol]]
+[[Test layer 8 jump| Layer8 Hub]]<br>
+<<nobr>>*/
+
+<<if $tunnelUsed == 1>>
+[[Look for the items you sent to the surface from the One-sided Tunnel|Surface Tunnel Retrieval]]<br><br>
+<</if>>
+<<if $fear == "">>
+[[Approach a grizzled diver and ask for advice for your dive|Surface Diver Tips 1]]<br>
+<<else>>
+[[Approach a grizzled diver and ask for advice for your dive|Surface Diver Tips 3]]<br>
+<</if>>
+<<if $hiredCompanions.length > 0 || $items[21].count>0>>
+[[Interact with your party|Party overview]] <<CheckParty>><br>
+<</if>>
+[[Use Items and Relics]]<br>
+[[Visit the Administrative Building|Surface Admin]]<br>
+<<if $items[19].count > 0>>
+[[Go to the Relic Workshop|Surface Workshop]]<br>
+<</if>>
+<<if $items[18].count > 0>>
+[[Go to the Inn|Surface Inn]]<br>
+<</if>>
+[[Enter the item shop|Surface Shop 1]]<br>
+[[Sell your Relics|Surface Sell 1]]<br>
+<<nobr>>
+[[Check out the companions available to hire|Surface Companions]]<br>
+
+<</nobr>>
+[[Listen to a summary of the mechanics before continuing|Surface Summary]]<br>
+[[View the Surface Habitation option|Surface Habitation]]<br><br>
+
+[[Walk to the edge of the Abyss|Surface Exit]]
+<</nobr>>
+<<else>>
+
+You must have a positive dubloon total or hire Cloud so you can go into debt.
+
+Would you like to go back to before you were in debt without a creditor, like Cloud?
+
+<<back [[Go back to before you were in debt|Surface Hub]]>>
+<</if>>
+
+
+<p>[[Continue your business on the surface|Surface Hub]]</p>
+
+:: Surface Summary [surface]
+
+[img[setup.ImagePath+'icon.png']]
+
+Looks like you're ready to start your voyage! Let me just summarize and make some quick notes:
+
+You have four major stats you should keep track of - corruption, gained from Curses and spent obtaining Relics or whenever you ascend a page, days of food and days of water, which you should be consuming 1 point each of daily or things will get really bad, and dubloons, which you can spend on this page. (You can obtain more by surfacing with Relics and selling unwanted ones.) Weights are provided so that you don't break your back lifting completely unrealistic load, but you'll need to set your limits there. The only one that can logically become negative is corruption, but I'd use caution and try to keep it balanced when possible reckless choices may leave you with a deficit that you can't balance out, and you can't choose a Habitation option and end your adventure with corruption points lower than 0. Other than the free stipend of 300 dubloons that you got, all stats start at 0.
+
+Though it heavily references it and shares a name with it, this isn't quite the same Abyss that you might be familiar with from certain work of fiction. You won't cry blood when ascending, and while death's certainly still possible, sexual misadventures are more likely. Prior knowledge of that Abyss and universe isn't necessary to enjoy this adventure at all.
+
+You'll have my voice down there explaining your available options, but I won't be physically accompanying you. If you like, you can think of it as manifestation of your own intuition, or as the voice of the Abyss itself, or both.
+
+[[Return to town|Surface Hub]]
+
+:: Surface Exit [surface]
+You stand at the foot of the Abyss, a hole large enough to defy the imagination. A light, cold wind tickles your face &mdash; not a familiar northerly wind, not a zephyr, not any kind of wind you've experienced before &mdash;  no, this wind beckons you from below, from deep within the earth. The greedy maw of the Abyss patiently awaits your descent. The only way forward is downward.
+
+It won't take too long to make your way down to the Abyss proper &mdash; there's no cost in moving down to the next layer. Just be sure you're ready, getting back is the hard part.
+
+[[Return to town|Surface Hub]]
+[[Descend into the Abyss|Layer1 1]]
+

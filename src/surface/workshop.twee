@@ -1,0 +1,147 @@
+:: Surface Workshop [surface indoor]
+
+[img[setup.ImagePath+$items[19].image]]
+
+You step into the Relic Workshop of Outset Town. The air is thick with the smell of glue, sawdust, and molten metal. You see a couple of other adventurers tinkering away at Relics they found themselves. You approach one of the free workbenches and decide what you want to do.
+
+<<nobr>>
+<<for $i = 0; $i < $ownedRelics.length; $i++>>
+	<<capture $i>>
+	<<if $ownedRelics[$i].name == "Purity Tree Plank">>
+
+		<br>Would you like to fashion your Purity Wood Planks into protective gear for a value of +25 corruption each?<br>
+
+		[[Use Purity Wood Plank|Surface Workshop][$ownedRelics.deleteAt($i), $corruption += 25]]<br>
+	<</if>>
+
+	<<if $ownedRelics[$i].name == "Rømer Stones">>
+	<br>You muse over what you can do with the Rømer Stones, taking advantage over their ability for limitless small-scale heating or cooling.<br><br>
+	You can either craft self-warming winter gear using winter clothes available, or you could use some light summer clothing to craft some self-cooling summer gear. Either one of these will require using all of the Rømer stones to craft.<br>
+		<<if $warmCloth == 0>>
+		[[Use the Rømer Stones for self-warming winter gear|Surface Workshop][$soldRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i), $items[22].count = 1,$warmCloth=1]]<br>
+		<</if>>
+		<<if $coolCloth == 0>>
+		[[Use the Rømer Stones for self-cooling summer gear|Surface Workshop][$soldRelics.push($ownedRelics[$i]), $ownedRelics.deleteAt($i), $items[23].count = 1, $coolCloth=1]]<br>
+		<</if>>
+	<</if>>
+	<<if $ownedRelics[$i].name == "Creepy Doll" && $dollevent==false>>
+		<br>You are intrigued by the doll and its warm yet creepy aura. Perhaps you want to take a peek inside and see whether it truly is a doll or if its something different entirely that merely takes on the appearance of a doll.<br>
+		[[Use scizzors to cut open the doll|Doll event]]<br>
+	<</if>>
+	<<if $ownedRelics[$i].name == "Brave Vector" && $slingshot == 0>>
+		<br>The Brave Vector seems like it should have some application as a weapon, but it turns out that it is exceedingly difficult to use a bent pipe like that as a gun substitute. Luckily, with the help of the resident Relic experts, you can change the form of the Brave Vector to a much more useful one. They seem to reccomend a sort of metal slingshot design, which should be able to function like a gun, but will be able to use anything of approximately the correct size as ammo.<br>
+		[[Reshape the Brave Vector into a powerful slingshot|Surface Workshop][$slingshot = 1]]<br>
+	<</if>>
+	<<if $ownedRelics[$i].name == "Joyous Sunder" && $joyousSword == 0>>
+		<br>The Joyous Sunder is an incredibly powerful offensive tool, but it is limited by its form as a small knife. Luckily, with the help of the local Relic Engineers, you can reshape this Relic into a true sword that an expert swordsman would feel comfortable using. A weapon like that would be literally unstoppable by any enemy that can be defeated by physical attacks and does not disable the user before they can get close enough to use it. This would be most useful in the hands of someone like Khemia, letting him defeat powerful beasts from the depths of the Abyss without fear of injury himself. <br>
+		[[Reshape the Joyous Sunder into a true sword|Surface Workshop][$joyousSword = 1]]<br>
+	<</if>>
+	<<if $ownedRelics[$i].name == "MoonWatcher" && $BionicEye == false>>
+		<br>You muse about the added benefit of having the MoonWatcher installed as a bionic eye. It feels almost as if you will acquired a super power. Night vission and being able to see through objects sounds really useful. Here, in the Relic workshop they can help you install it safely.<br>
+		[[Have the MoonWatcher surgically placed as your bionic eye|Surface Workshop][$light = 1, $BionicEye=true]]<br>
+	<</if>>
+	<<if $ownedRelics[$i].name == "Glory's Grasp" && $BionicArm == false>>
+		<br>You muse about the added benefit of having the Glory's Grasp installed as a bionic arm. Here, in the Relic workshop they can help you install it safely.<br>
+		[[Have the Glory's Grasp surgically placed as your bionic arm|Surface Workshop][$BionicArm=true]]<br>
+	<</if>>
+	<<if $ownedRelics[$i].name == "Omoikane Circuit" && $items[17].count > 0>>
+		<br>You heard that the Omoikone Circuit was a Relic designed to put in your phone. So why don't you try putting it here within the safety of the Relic workshop?<br>
+		[[Time to upgrade that phone!|AI ConvoIn][$items[17].count  = 0, $items[21].count  = 1, $ownedRelics.deleteAt($i), $soldRelics.push($ownedRelics[$i]) ]]<br>
+	<</if>>
+	<</capture>>
+<</for>>
+<<if $items[21].count > 0>>
+	<br>Is listening to that snarky AI worth the spec upgrade to the Omoikone Smartphone?<br>
+	[[Hell no, time for a downgrade|AI ConvoOut][$items[17].count  = 1, $items[21].count  = 0, $ownedRelics.push($relic36) ]]<br>
+<</if>>
+<</nobr>>
+
+[[Continue your business in Outset Town|Surface Hub]]
+
+
+:: Doll event [surface]
+
+<<say $creepydoll>> AAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHH<</say>>
+A sudden sensation of intense pain surges through your body, making you double over. It feels as if your body has been engulfed by flames that sear each and every nerve in your skin, while a thousand needles are pushed deeper into you, all at once. Almost immediately, it becomes too much for you and you pass out.
+<<ConversationChoices
+	[[Darkness...|Doll event continued]]
+>>
+
+:: Doll event continued[surface]
+You wake up in a corner of the Relic Workshop with the doll clutched tightly in your arms, pressed against your chest. It gives a pleasantly warm feeling, comforting you after your terrifying experience before you passed out. Somehow, as you hug the doll, you feel calm and satisfied for at least a moment. When you look down and check your skin, everything seems alright, no scars or burns anywhere. Luckily it seems that your body has not actually been torn apart, instead it was either a psychic attack of some sort or a vision of a possible future. Whatever the case, perhaps its better to not proceed with the plan to cut open the doll.
+<<link "Was there anything else I wanted to do here?" "Surface Workshop">>
+  <<dollTF>>
+  <<set $dollevent=true>>
+<</link>>
+
+
+:: DollWarning 
+<<Update_MC_Speech>>
+Suddenly, you start hearing the voice of the doll again, it almost sounds like it's coming from inside your own head.
+
+<<say $creepydoll>> Don't you sometimes get tired of all this adventuring?<</say>>
+
+Despite your surprise, you decide to answer the doll's question.
+
+<<say $mc>> Sometimes, I guess. It's not always easy, but the thrill of adventure more than makes up for it to me. <</say>>
+
+<<say $creepydoll>> You know, I can feel what you feel? And what I felt was sleepyness and tired thoughts and lots of doubt. Don't lie to me. Lying is not nice. Good girls don't lie. Only BAD people lie. IF YOU LIE YOU NEED TO GET PUNISHED. I HATE LIARS! HATE HATE HATE HATE HATE THEM<</say>>
+
+A strong, cold chill runs down your spine.
+
+<<say $mc>>I... I'm not lying I swear! It's just that with the changes to my body I fatigue much quicker than before. I have to try harder and harder to do the same things. But I swear that I still want to discover more of the Abyss. I can't just give up and I won't! I think it's worth it and I enjoy it!<</say>>
+
+The cold sensation dissipates and you feel a warm, soft aura coming from the doll once again.
+
+<<say $creepydoll>> Oh, I see! You just want to have fun! I also want to have fun! You know what doesn't make you sleepy and is super fun?<</say>>
+
+<<say $mc>> Uh, no? <</say>>
+
+<<say $creepydoll>> Playing games, silly. We should go to my house and play all day! That would be super fun! <</say>>
+
+You're a bit hesitant about going to god-forsaken corner of the Abyss to "play", so you try to weasle out of it while attempting to avoid the doll's anger.
+
+<<say $mc>>Maybe that could be fun someday, okay?<</say>>
+
+<<say $creepydoll>> Yay, I'm so happy! Because today is some day you know?<</say>>
+
+<<say $mc>> Um, sorry, I didn't mean today. I meant another day...<</say>>
+
+You feel very tired all of a sudden and your consciousness starts to slip away.
+
+You start to dream.
+
+You see yourself walking around with your dolly and at some point you recognize the outskirts of Outcast Village as you seem to pass it by. The next moment, you are in a playroom, in a house wearing a similar dress as your dolly. You look so cute together! You have tea time with her and you run around playing tag.
+
+It's so much fun you can hardly keep track of what's happening.<<nobr>>
+<<dollTF>>
+<</nobr>>
+As you run, you trip over something that somehow didn't seem to fully be there. The shock suddenly wakes you up, and you realize you fell over a rotting, collapsed wooden support beam. After looking around, you find yourself not in the playroom of a nice house, but in the decrepit room on the first layer where you found the creepy doll.
+
+<<say $creepydoll>> Aww, did you have an ouchie?<</say>>
+
+<<say $mc>> What...? Where am I? Why are we here? Why am I wearring this tattered dress?<</say>>
+
+<<say $creepydoll>> Because it makes us look like cute twins!<</say>>
+
+<<say $mc>> I... I don't want this. Or at least, I think I don't?<</say>>
+
+<<say $creepydoll>> Oh somebody is grumpy, so why don't you take a nap, and then we'll decide later?<</say>>
+<<ConversationChoices
+	[[Don't risk the dolls ire and take the nap|DollWarning nap]]
+	[[Insist you want to leave NOW!|DollWarning leave]]
+>>
+
+::DollWarning leave
+<<say $mc>> I'd rather really not. To be honest, I just want to get my regular clothes back, to leave this place, and to go somewhere else. <</say>><br>
+<<say $creepydoll>> Hmm, thats okay. We already played a lot today. We'll just play some other time. Soon...<</say>>
+
+You scramble to get your clothes and hurry out of the rotten house, leaving this place and the doll far behind. Once there is some distance between you and the doll, you stop to change your clothes. But instead of grabbing your clothes, you find the doll in your hands, once again.
+
+<<say $mc>> What?! How?! I'm pretty sure I grabbed my clothes, right?<</say>><br>
+<<say $creepydoll>> Those smelly old things? Why would you need those? You look much better than this, you silly. Now we are cute twinsies. ISN'T THAT FUN?<</say>>
+
+You want to throw the doll away, but your body simply refuses. At the moment it seems there is nothing you can do. No matter what you want to do, you can neither get rid of the doll, nor change your clothes.
+
+[[Continue your adventure wearing the tattered dress and carrying the doll|Layer1 Hub][$creepydoll.affec += 10, $dollevent2=true]]
+
